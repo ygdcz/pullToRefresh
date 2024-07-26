@@ -1,29 +1,19 @@
-import {useState} from "react"
-import PullToRefresh from "./components/PullToRefresh"
+import {useEffect, useState} from "react"
 
-const num = 5;
 function App() {
-	const [list, setList] = useState<string[]>(new Array(num).fill(""));
-	return (
-		<>
-			<PullToRefresh onRefresh={async () => {
-				return new Promise((resolve) => setTimeout(() => {
-					setList(prev => prev.concat(new Array(num).fill("")));
-					resolve(1)
-				}, 2000))
-			}}>
-				<ul className="text-center select-none">
-					{
-						list.map((_, idx) => (
-							<li key={idx} className="text-center h-32">
-								{idx}
-							</li>
-						))
-					}
-				</ul>
-			</PullToRefresh>
-		</>
-	)
+	const [number, setNumber] = useState(0);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      // do fetch
+      console.log(number);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+    // 依赖这里会有个警告
+  }, []);
+
+  return <button onClick={() => setNumber((c) => c + 1)}>点击{number}次</button>;
 }
 
 export default App
